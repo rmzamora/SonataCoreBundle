@@ -1,11 +1,16 @@
 {
-    "name": "sonata-project/core-bundle",
+    "name": "rmzamora/core-bundle",
     "type": "symfony-bundle",
     "description": "Symfony SonataCoreBundle",
     "keywords": ["sonata"],
     "homepage": "http://sonata-project.org/bundles/core",
     "license": "MIT",
     "authors": [
+        {
+            "name": "Mell M. Zamora",
+            "email": "me@mellzamora.com",
+            "homepage": "http://mellzamora.com"
+        },
         {
             "name": "Thomas Rabaix",
             "email": "thomas.rabaix@sonata-project.org"
@@ -39,7 +44,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "2.3.x-dev"
+            "dev-master": "2.4.x-dev"
         }
     }
 }
