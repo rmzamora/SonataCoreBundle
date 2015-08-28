@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the Sonata package.
  *
@@ -18,8 +19,24 @@ class InlineConstraint extends Constraint
 
     protected $method;
 
+    protected $serializingWarning;
+
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
+     */
+    public function __construct($options = null)
+    {
+        parent::__construct($options);
+
+        if ((!is_string($this->service) || !is_string($this->method)) && $this->serializingWarning !== true) {
+            throw new \RuntimeException('You are using a closure with the `InlineConstraint`, this constraint'.
+                ' cannot be serialized. You need to re-attach the `InlineConstraint` on each request.'.
+                ' Once done, you can set the `serializingWarning` option to `true` to avoid this message.');
+        }
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function validatedBy()
     {
@@ -43,7 +60,7 @@ class InlineConstraint extends Constraint
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getTargets()
     {
@@ -51,13 +68,13 @@ class InlineConstraint extends Constraint
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getRequiredOptions()
     {
         return array(
             'service',
-            'method'
+            'method',
         );
     }
 
@@ -75,5 +92,43 @@ class InlineConstraint extends Constraint
     public function getService()
     {
         return $this->service;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSerializingWarning()
+    {
+        return $this->serializingWarning;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function __sleep()
+    {
+        if (!is_string($this->service) || !is_string($this->method)) {
+            return array();
+        }
+
+        // Initialize "groups" option if it is not set
+        $this->groups;
+
+        return array_keys(get_object_vars($this));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function __wakeup()
+    {
+        if (is_string($this->service) && is_string($this->method)) {
+            return;
+        }
+
+        $this->method = function () {
+        };
+
+        $this->serializingWarning = true;
     }
 }

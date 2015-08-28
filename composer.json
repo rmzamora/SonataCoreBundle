@@ -3,7 +3,7 @@
     "type": "symfony-bundle",
     "description": "Symfony SonataCoreBundle",
     "keywords": ["sonata"],
-    "homepage": "http://sonata-project.org/bundles/core",
+    "homepage": "https://sonata-project.org/bundles/core",
     "license": "MIT",
     "authors": [
         {
@@ -25,6 +25,8 @@
         "symfony/form": "~2.3",
         "symfony/config": "~2.3",
         "symfony/translation": "~2.3",
+        "symfony/validator": "~2.3",
+        "symfony/property-access": "~2.3",
         "twig/twig": "~1.16",
         "cocur/slugify": "*"
     },
@@ -37,7 +39,9 @@
         "friendsofsymfony/rest-bundle": "~1.1",
         "jms/serializer-bundle": "~0.11",
         "sensio/framework-extra-bundle": "~2.3",
-        "sonata-project/exporter": "~1.3"
+        "sonata-project/exporter": "~1.3",
+        "symfony/phpunit-bridge": "~2.7",
+        "fabpot/php-cs-fixer": "~0.5|~1.0"
     },
     "autoload": {
         "psr-4": { "Sonata\\CoreBundle\\": "" }

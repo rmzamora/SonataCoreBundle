@@ -12,6 +12,7 @@
 namespace Sonata\CoreBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class StatusType extends AbstractType
@@ -35,7 +36,7 @@ class StatusType extends AbstractType
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getParent()
     {
@@ -43,7 +44,7 @@ class StatusType extends AbstractType
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getName()
     {
@@ -51,12 +52,22 @@ class StatusType extends AbstractType
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
+     *
+     * @todo Remove it when bumping requirements to SF 2.7+
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
+        $this->configureOptions($resolver);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function configureOptions(OptionsResolver $resolver)
+    {
         $resolver->setDefaults(array(
-            'choices' => call_user_func(array($this->class, $this->getter))
+            'choices' => call_user_func(array($this->class, $this->getter)),
         ));
     }
 }

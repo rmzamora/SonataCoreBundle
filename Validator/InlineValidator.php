@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the Sonata package.
  *
@@ -10,9 +11,9 @@
 
 namespace Sonata\CoreBundle\Validator;
 
-use Symfony\Component\Validator\ConstraintValidator;
-use Symfony\Component\Validator\Constraint;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\ConstraintValidatorFactoryInterface;
 
 class InlineValidator extends ConstraintValidator
@@ -47,7 +48,7 @@ class InlineValidator extends ConstraintValidator
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function validate($value, Constraint $constraint)
     {

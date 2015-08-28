@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the Sonata package.
  *
@@ -11,10 +12,10 @@
 
 namespace Sonata\CoreBundle\Form\Type;
 
+use Sonata\CoreBundle\Form\DataTransformer\BooleanTypeToBooleanTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Sonata\CoreBundle\Form\DataTransformer\BooleanTypeToBooleanTransformer;
-
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class BooleanType extends AbstractType
@@ -24,7 +25,7 @@ class BooleanType extends AbstractType
     const TYPE_NO = 2;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -34,22 +35,32 @@ class BooleanType extends AbstractType
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
+     *
+     * @todo Remove it when bumping requirements to SF 2.7+
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
+        $this->configureOptions($resolver);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function configureOptions(OptionsResolver $resolver)
+    {
         $resolver->setDefaults(array(
-            'catalogue' => 'SonataCoreBundle',
-            'choices'   => array(
+            'translation_domain' => 'SonataCoreBundle',
+            'choices'            => array(
                 self::TYPE_YES  => 'label_type_yes',
-                self::TYPE_NO   => 'label_type_no'
+                self::TYPE_NO   => 'label_type_no',
             ),
-            'transform' => false
+            'transform' => false,
         ));
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getParent()
     {
@@ -57,7 +68,7 @@ class BooleanType extends AbstractType
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getName()
     {

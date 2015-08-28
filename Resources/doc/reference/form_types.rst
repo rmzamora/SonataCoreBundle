@@ -260,11 +260,11 @@ In your layout, you'll need to add the assets dependencies (feel free to adapt t
     <head>
         <!-- ... -->
         <script type="text/javascript" src="path_to_jquery.min.js"></script>
-        <script type="text/javascript" src="/bundles/sonatacore/public/vendor/moment/min/moment.min.js"></script>
+        <script type="text/javascript" src="/bundles/sonatacore/vendor/moment/min/moment.min.js"></script>
         <script type="text/javascript" src="path_to_bootstrap.min.js"></script>
-        <script type="text/javascript" src="/bundles/sonatacore/public/vendor/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+        <script type="text/javascript" src="/bundles/sonatacore/vendor/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
         <link rel="stylesheet" href="path_to_bootstrap.min.css" />
-        <link rel="stylesheet" href="/bundles/sonatacore/public/vendor/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" />
+        <link rel="stylesheet" href="/bundles/sonatacore/vendor/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" />
     </head>
 
 Finally, in your form, you may use the form type as follows:
@@ -299,3 +299,56 @@ Many of the `standard date picker options <http://eonasdan.github.io/bootstrap-d
 If you look in the classes ``DateTimePickerType.php`` and ``BasePickerType.php`` you can see all the currently available options.
 
 In addition to these standard options, there is also the option `datepicker_use_button` which, when used, will change the widget so that the datepicker icon is not shown and the pop-up datepicker is invoked simply by clicking on the date input.
+
+sonata_type_date_range_picker and sonata_type_datetime_range_picker
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+`sonata_type_date_range_picker` and `sonata_type_datetime_range_picker` extends the basic range form field types (`sonata_type_date_range` and `sonata_type_datetime_range`).
+You can use them if you need datetime picker in datetime range filters.
+
+Example with `doctrine_orm_date_range` filter:
+
+.. code-block:: php
+
+    <?php
+
+    // ...
+
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+    {
+        $datagridMapper
+                ->add('createdAt', 'doctrine_orm_date_range', array('field_type'=>'sonata_type_date_range_picker',))
+        ;
+    }
+
+sonata_type_color_picker
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+This type a simple color picker from AdminLTE colors. Its available as service, and inherit from ``choice`` default form types.
+
+
+.. image:: ../images/colorpicker.png
+
+In order to use it, you'll need to perform a bit of setup:
+
+.. code-block:: yaml
+
+    # app/config.yml
+    twig:
+        # ...
+        form:
+            resources:
+                # ...
+                - 'SonataCoreBundle:Form:colorpicker.html.twig'
+
+Finally, in your form, you may use the form type as follows:
+
+.. code-block:: php
+
+    <?php
+
+    // ...
+        $builder
+            ->add('color', 'sonata_type_color_picker')
+            // ...
+        ;
