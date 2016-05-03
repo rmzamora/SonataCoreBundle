@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Sonata package.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -71,7 +71,10 @@ class TranslatableChoiceType extends AbstractType
      */
     public function getParent()
     {
-        return 'choice';
+        return method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix') ?
+            'Symfony\Component\Form\Extension\Core\Type\ChoiceType' :
+            'choice' // SF <2.8 BC
+        ;
     }
 
     /**

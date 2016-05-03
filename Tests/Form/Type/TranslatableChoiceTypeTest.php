@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Sonata package.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -26,10 +26,15 @@ class TranslatableChoiceTypeTest extends TypeTestCase
 
         FormHelper::configureOptions($type, $resolver = new OptionsResolver());
 
-        $this->assertEquals('choice', $type->getParent());
+        $this->assertSame(
+            method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix') ?
+                'Symfony\Component\Form\Extension\Core\Type\ChoiceType' :
+                'choice',
+            $type->getParent()
+        );
 
         $options = $resolver->resolve(array('catalogue' => 'foo'));
 
-        $this->assertEquals('foo', $options['catalogue']);
+        $this->assertSame('foo', $options['catalogue']);
     }
 }

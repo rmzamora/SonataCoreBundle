@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Sonata package.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -52,7 +52,10 @@ class DateTimePickerType extends BasePickerType
      */
     public function getParent()
     {
-        return 'datetime';
+        return method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix') ?
+            'Symfony\Component\Form\Extension\Core\Type\DateTimeType' :
+            'datetime' // SF <2.8 BC
+        ;
     }
 
     /**
