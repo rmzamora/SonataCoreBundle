@@ -1,13 +1,12 @@
 <?php
 
 /*
- * This file is part of the Sonata package.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- *
  */
 
 namespace Sonata\CoreBundle\Form\Type;
@@ -51,12 +50,26 @@ class EqualType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
-            'choices' => array(
-                self::TYPE_IS_EQUAL     => $this->translator->trans('label_type_equals', array(), 'SonataCoreBundle'),
-                self::TYPE_IS_NOT_EQUAL => $this->translator->trans('label_type_not_equals', array(), 'SonataCoreBundle'),
-            ),
-        ));
+        $choices = array(
+            self::TYPE_IS_EQUAL     => $this->translator->trans('label_type_equals', array(), 'SonataCoreBundle'),
+            self::TYPE_IS_NOT_EQUAL => $this->translator->trans('label_type_not_equals', array(), 'SonataCoreBundle'),
+        );
+
+        $defaultOptions = array();
+
+        // SF 2.7+ BC
+        if (method_exists('Symfony\Component\Form\AbstractType', 'configureOptions')) {
+            $choices = array_flip($choices);
+
+            // choice_as_value options is not needed in SF 3.0+
+            if (method_exists('Symfony\Component\Form\FormTypeInterface', 'setDefaultOptions')) {
+                $defaultOptions['choices_as_value'] = true;
+            }
+        }
+
+        $defaultOptions['choices'] = $choices;
+
+        $resolver->setDefaults($defaultOptions);
     }
 
     /**
@@ -64,7 +77,10 @@ class EqualType extends AbstractType
      */
     public function getParent()
     {
-        return 'choice';
+        return method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix') ?
+            'Symfony\Component\Form\Extension\Core\Type\ChoiceType' :
+            'choice' // SF <2.8 BC
+        ;
     }
 
     /**

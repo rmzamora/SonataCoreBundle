@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Sonata package.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -17,7 +17,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class FormHelper
 {
-    private static $typeMappping = array();
+    private static $typeMapping = array();
 
     private static $extensionMapping = array();
 
@@ -61,7 +61,7 @@ class FormHelper
      */
     public static function registerFormTypeMapping(array $mapping)
     {
-        self::$typeMappping = array_merge(self::$typeMappping, $mapping);
+        self::$typeMapping = array_merge(self::$typeMapping, $mapping);
     }
 
     /**
@@ -82,7 +82,7 @@ class FormHelper
      */
     public static function getFormTypeMapping()
     {
-        return self::$typeMappping;
+        return self::$typeMapping;
     }
 
     /**
@@ -95,7 +95,7 @@ class FormHelper
     {
         if (!method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')) {
             $type->setDefaultOptions($optionsResolver);
-        } else {
+        } else { // SF <2.8 BC
             $type->configureOptions($optionsResolver);
         }
     }

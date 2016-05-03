@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Sonata package.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -22,13 +22,18 @@ class BooleanTypeTest extends TypeTestCase
     {
         $type = new BooleanType();
 
-        $this->assertEquals('choice', $type->getParent());
+        $this->assertSame(
+            method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix') ?
+                'Symfony\Component\Form\Extension\Core\Type\ChoiceType' :
+                'choice',
+            $type->getParent()
+        );
 
         FormHelper::configureOptions($type, $optionResolver = new OptionsResolver());
 
         $options = $optionResolver->resolve();
 
-        $this->assertEquals(2, count($options['choices']));
+        $this->assertSame(2, count($options['choices']));
     }
 
     public function testAddTransformerCall()
@@ -76,12 +81,20 @@ class BooleanTypeTest extends TypeTestCase
 
         $type->buildForm($builder, $resolvedOptions);
 
-        $this->assertEquals(array(
+        $expectedOptions = array(
             'transform'          => false,
             'catalogue'          => 'SonataCoreBundle',
+            'choices_as_values'  => true,
             'translation_domain' => 'fooTrans',
             'choices'            => array(1 => 'foo_yes', 2 => 'foo_no'),
-        ), $resolvedOptions);
+        );
+
+        if (!method_exists('Symfony\Component\Form\AbstractType', 'configureOptions')
+            || !method_exists('Symfony\Component\Form\FormTypeInterface', 'setDefaultOptions')) {
+            unset($expectedOptions['choices_as_values']);
+        }
+
+        $this->assertSame($expectedOptions, $resolvedOptions);
     }
 
     public function testLegacyDeprecatedCatalogueOption()
@@ -100,11 +113,21 @@ class BooleanTypeTest extends TypeTestCase
 
         $type->buildForm($builder, $resolvedOptions);
 
-        $this->assertEquals(array(
+        $expectedOptions = array(
             'transform'          => false,
+            'choices_as_values'  => true,
             'catalogue'          => 'fooTrans',
             'translation_domain' => 'fooTrans',
             'choices'            => array(1 => 'foo_yes', 2 => 'foo_no'),
-        ), $resolvedOptions);
+        );
+
+        if (!method_exists('Symfony\Component\Form\AbstractType', 'configureOptions')
+            || !method_exists('Symfony\Component\Form\FormTypeInterface', 'setDefaultOptions')) {
+            unset($expectedOptions['choices_as_values']);
+        }
+
+        // "sort" trick can be remove when SF 2.3 support will be drop
+        // Reason: array order as not the same between SF versions. This is the easiest way to fix it.
+        $this->assertSame(sort($expectedOptions), sort($resolvedOptions));
     }
 }
